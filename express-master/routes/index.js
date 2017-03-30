@@ -11,6 +11,14 @@ router.get('/', function(req, res, next) {
         res.render('index', { title: 'TODO list' , tasks: tasks });
     });
 });
+router.get('/completed', function(req, res, next){
+    req.task_col.find({completed:true}).toArray(function(err, tasks){
+        if (err) {
+            return next(err);
+        }
+        res.render('tasks_completed', { title: 'Completed tasks' , tasks: tasks });
+    });
+});
 /* POST Add new task, then redirect to task list */
 router.post('/add', function(req, res, next){
 
@@ -35,8 +43,11 @@ router.post('/add', function(req, res, next){
 });
 //adds done button
 router.post('/done', function(req, res, next){
-
-    req.task_col.updateOne({ _id : ObjectID(req.body._id) }, {$set : { completed : true }}, function(err, result) {
+//convert object string to object object
+    req.task_col.updateOne(
+        { _id : ObjectID(req.body._id) },
+        {$set : { completed : true }},
+        function(err, result) {
 
         if (err) {
             return next(err);    // For database errors, 500 error
