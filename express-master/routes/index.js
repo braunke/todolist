@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var ObjectID = require('mongodb').ObjectID
 /* GET home page, a list of incomplete tasks . */
 router.get('/', function(req, res, next) {
 
@@ -33,6 +33,24 @@ router.post('/add', function(req, res, next){
     }
 
 });
+//adds done button
+router.post('/done', function(req, res, next){
+
+    req.task_col.updateOne({ _id : ObjectID(req.body._id) }, {$set : { completed : true }}, function(err, result) {
+
+        if (err) {
+            return next(err);    // For database errors, 500 error
+        }
+
+        if (result.result.n == 0) {
+            var req_err = new Error('Task not found');
+            req_err.status = 404;
+            return next(req_err);     // Task not found error
+        }
+        req.flash('info', 'Marked as completed');
+        return res.redirect('/')
+    })
+    });
 
 
 module.exports = router;
