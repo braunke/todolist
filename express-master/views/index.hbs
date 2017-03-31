@@ -14,7 +14,7 @@
 
     {{#each tasks}}
 
-        <p>{{@index}}: {{this.text}}</p>
+        <p>{{@index}}: <a href="/task/{{this._id}}">{{this.text}}</a></p>
 
         <form class="done_form" action="/done" method="POST">
             <input type="hidden" name="_id" value="{{this._id}}">
