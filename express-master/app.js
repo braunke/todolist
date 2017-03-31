@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+//uses mongoose
 var mongoose = require('mongoose');
 
 var assert = require('assert');
@@ -19,7 +19,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-
+//connect mongo
 var url = 'mongodb://localhost:27017/todo';
 mongoose.connect(url);
 
